@@ -1,0 +1,21 @@
+# Generated Xcode project (regenerate with: xcodegen generate)
+*.xcodeproj
+
+# Xcode / SwiftPM build output
+.build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.swiftpm/
+
+# macOS
+.DS_Store
+
+# Packaging
+dist/
+*.dmg
+
+# Downloaded model weights live outside the repo, but ignore a top-level
+# Models/ dir just in case. Anchored with a leading slash so it does NOT match
+# the Sources/Models/ source folder.
+/Models/
