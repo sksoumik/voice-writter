@@ -3,10 +3,11 @@
 
 # Xcode / SwiftPM build output
 .build/
-DerivedData/
+DerivedData
 *.xcuserstate
 xcuserdata/
 .swiftpm/
+*.app
 
 # macOS
 .DS_Store
