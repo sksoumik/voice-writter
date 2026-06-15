@@ -109,7 +109,9 @@ Voice Writter does not make network calls except to download the open models fro
 
 ## License
 
-MIT. See `LICENSE`.
+This project is licensed under the **MIT License**. You are free to use, copy, modify, and distribute it, including for commercial use, as long as the copyright notice and the permission notice are kept. It comes with no warranty.
+
+Read the full license text in [LICENSE](LICENSE).
 
 ## Credits
 
