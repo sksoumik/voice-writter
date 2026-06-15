@@ -1,4 +1,5 @@
 import SwiftUI
+import KeyboardShortcuts
 
 /// The Settings window, reachable from the menu.
 struct SettingsView: View {
@@ -22,8 +23,10 @@ private struct GeneralSettingsView: View {
     var body: some View {
         Form {
             Section("How to dictate") {
-                Text("Press Option + Q to start listening, then press Option + Q again to stop and insert the cleaned text. Press Escape to cancel.")
-                    .font(.callout)
+                KeyboardShortcuts.Recorder("Dictation shortcut:", name: .toggleDictation)
+                Text("Press your shortcut to start listening, press it again to stop and insert the cleaned text. Press Escape to cancel. The default is Option + Q.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
 
             Section("Grammar") {

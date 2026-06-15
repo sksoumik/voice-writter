@@ -9,7 +9,7 @@ You press a global hotkey, speak, and press it again. Voice Writter turns your s
 - System wide dictation. It types into any app: notes, browsers, chat apps, code editors, email.
 - On device speech recognition using [WhisperKit](https://github.com/argmaxinc/argmax-oss-swift), which runs Whisper models on the Apple Neural Engine.
 - On device grammar correction using a small local language model through [MLX](https://github.com/ml-explore/mlx-swift-lm). It fixes grammar, spelling, and punctuation, and lightly smooths awkward phrasing while keeping your meaning and voice.
-- Press Option + Q to start, press it again to stop and insert.
+- Press Option + Q to start, press it again to stop and insert. The shortcut is configurable in Settings.
 - A floating overlay that shows the status and a microphone level while you speak.
 - Private by design. Audio and text never leave your Mac.
 
@@ -75,7 +75,7 @@ A setup window opens on first launch and walks you through:
 3. **Press Option + Q again** to stop. Voice Writter transcribes, cleans up the grammar, and pastes the text where your cursor is.
 4. To throw away a dictation, press **Escape**.
 
-Note: while Voice Writter is running, Option + Q is reserved for it and will not type the "œ" character.
+You can change the dictation shortcut anytime in **Settings → General → Dictation shortcut**. While Voice Writter is running, the chosen shortcut is reserved for it and will not type its normal character.
 
 You can change the correction style and the models in Settings, reachable from the menu bar icon.
 
@@ -117,3 +117,4 @@ Built on these open source projects:
 
 - [WhisperKit / argmax-oss-swift](https://github.com/argmaxinc/argmax-oss-swift) (MIT)
 - [MLX Swift LM](https://github.com/ml-explore/mlx-swift-lm) and [MLX Swift](https://github.com/ml-explore/mlx-swift) (MIT)
+- [KeyboardShortcuts](https://github.com/sindresorhus/KeyboardShortcuts) (MIT)

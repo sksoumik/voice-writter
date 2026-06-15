@@ -72,7 +72,7 @@ struct OnboardingView: View {
                 number: 5,
                 title: "How to use it",
                 done: true,
-                detail: "Press Option + Q to start listening, then press Option + Q again to stop. Voice Writter types the cleaned text where your cursor is. Press Escape to cancel."
+                detail: "Press Option + Q to start listening, then press Option + Q again to stop. Voice Writter types the cleaned text where your cursor is. Press Escape to cancel. You can change the shortcut in Settings."
             ) { EmptyView() }
 
             Divider()
