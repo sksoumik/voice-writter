@@ -15,6 +15,7 @@ final class DictationController: ObservableObject {
     @Published private(set) var modelsReady: Bool = false
     @Published private(set) var whisperProgress: Double = 0
     @Published private(set) var grammarProgress: Double = 0
+    @Published private(set) var grammarLoading: Bool = false
     @Published private(set) var lastMessage: String = ""
 
     private let settings = AppSettings.shared
@@ -68,18 +69,25 @@ final class DictationController: ObservableObject {
 
     /// Reload the grammar model after the user picks a different one.
     func reloadGrammarModel() {
+        let modelId = settings.grammarModelId.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !modelId.isEmpty, !grammarLoading else { return }
         Task {
+            grammarLoading = true
             grammarProgress = 0
+            lastMessage = ""
+            defer { grammarLoading = false }
             do {
                 try await grammar.prepare(
-                    modelId: settings.grammarModelId,
+                    modelId: modelId,
                     style: settings.correctionStyle,
                     customInstructions: settings.customInstructions
                 ) { [weak self] frac in
                     Task { @MainActor in self?.grammarProgress = frac }
                 }
+                lastMessage = "Loaded \(modelId)"
             } catch {
                 Log.error("Grammar reload failed: \(error.localizedDescription)")
+                lastMessage = "Could not load \(modelId)"
             }
         }
     }

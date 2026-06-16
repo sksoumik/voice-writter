@@ -105,20 +105,31 @@ private struct ModelSettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
 
-                if controller.grammarProgress > 0, controller.grammarProgress < 1 {
-                    ProgressView(value: controller.grammarProgress) {
-                        Text("Downloading grammar model")
+                if controller.grammarLoading {
+                    if controller.grammarProgress > 0, controller.grammarProgress < 1 {
+                        ProgressView(value: controller.grammarProgress) {
+                            Text("Downloading grammar model… \(Int(controller.grammarProgress * 100))%")
+                        }
+                    } else {
+                        ProgressView {
+                            Text("Loading grammar model…")
+                        }
                     }
                 }
             }
 
             Section {
-                Text(controller.modelsReady ? "Models are loaded and ready." : "Models are loading…")
+                Text(grammarStatus)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
         }
         .formStyle(.grouped)
+    }
+
+    private var grammarStatus: String {
+        if controller.grammarLoading { return "Loading grammar model…" }
+        return controller.modelsReady ? "Grammar model ready." : "Loading models…"
     }
 }
 
