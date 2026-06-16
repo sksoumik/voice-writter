@@ -1,0 +1,90 @@
+name: Release
+
+# Publishes a downloadable .dmg to the GitHub Releases page.
+# Trigger by pushing a version tag (for example: git tag v0.1.0 && git push --tags)
+# or by running this workflow manually with a version.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version tag, for example v0.1.0"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: macos-15
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Select the latest stable Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Download the Metal Toolchain if needed
+        run: xcodebuild -downloadComponent MetalToolchain || true
+
+      - name: Resolve the version
+        id: ver
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate the Xcode project
+        run: xcodegen generate
+
+      - name: Build (Release, ad hoc signed)
+        run: |
+          xcodebuild \
+            -project VoiceWritter.xcodeproj \
+            -scheme VoiceWritter \
+            -configuration Release \
+            -destination 'platform=macOS,arch=arm64' \
+            -derivedDataPath .build/dd \
+            -skipMacroValidation \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGN_STYLE=Manual \
+            build
+
+      - name: Package the disk image
+        run: |
+          APP=.build/dd/Build/Products/Release/VoiceWritter.app
+          mkdir -p dist
+          STAGING="$(mktemp -d)"
+          cp -R "$APP" "$STAGING/"
+          ln -s /Applications "$STAGING/Applications"
+          hdiutil create -volname "Voice Writter" -srcfolder "$STAGING" -ov -format UDZO \
+            "dist/VoiceWritter-${{ steps.ver.outputs.version }}.dmg"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          NOTES="On device voice to text with local grammar correction for macOS (Apple Silicon).
+
+          This build is not notarized, so macOS will not open it directly. Install it like this:
+          1. Open the .dmg and drag Voice Writter to your Applications folder.
+          2. Remove the quarantine flag once, in Terminal:
+             xattr -dr com.apple.quarantine /Applications/VoiceWritter.app
+          3. Open Voice Writter and grant Microphone, Accessibility, and Input Monitoring when asked.
+
+          Requires an Apple Silicon Mac (M1 or newer) and macOS 14 or later. About 2 to 3 GB of models download on first run."
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            gh release upload "$VERSION" dist/*.dmg --clobber
+          else
+            gh release create "$VERSION" dist/*.dmg --title "Voice Writter $VERSION" --notes "$NOTES"
+          fi

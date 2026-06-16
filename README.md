@@ -13,6 +13,22 @@ You press a global hotkey, speak, and press it again. Voice Writter turns your s
 - A floating overlay that shows the status and a microphone level while you speak.
 - Private by design. Audio and text never leave your Mac.
 
+## Download
+
+Prebuilt releases are on the [Releases page](https://github.com/sksoumik/voice-writter/releases).
+
+1. Download the latest `VoiceWritter-vX.Y.Z.dmg`, open it, and drag Voice Writter to your Applications folder.
+2. This build is not notarized (the project has no paid Apple Developer account), so macOS will not open it directly. Remove the quarantine flag once, in Terminal:
+
+   ```bash
+   xattr -dr com.apple.quarantine /Applications/VoiceWritter.app
+   ```
+
+   Then open Voice Writter from your Applications folder.
+3. Grant Microphone, Accessibility, and Input Monitoring when asked.
+
+Prefer to build it yourself? See [Build and run](#build-and-run) below.
+
 ## Requirements
 
 - An Apple Silicon Mac (M1 or newer).
@@ -120,6 +136,15 @@ Source layout:
 ## Privacy
 
 Voice Writter does not make network calls except to download the open models from Hugging Face on first run. After that it works fully offline. The app is not sandboxed because typing into other apps through the Accessibility API is not possible from a sandboxed app.
+
+## Releasing (for maintainers)
+
+Two ways to publish a downloadable build to the Releases page:
+
+- **Locally:** `./scripts/release.sh v0.1.0` builds, packages a `.dmg`, and creates the GitHub release. If you have a Developer ID certificate (and set the App Store Connect API key env vars), it also notarizes and staples for a warning free install.
+- **In CI:** push a tag (`git tag v0.1.0 && git push --tags`), or run the **Release** workflow manually. The GitHub Actions workflow in `.github/workflows/release.yml` builds and attaches the `.dmg` automatically.
+
+Without a paid Apple Developer account the build is ad hoc signed, so downloaders remove the quarantine flag once (see Download above). To produce notarized builds later, add a Developer ID certificate and notary credentials; the release script and workflow already have the hooks for it.
 
 ## License
 
