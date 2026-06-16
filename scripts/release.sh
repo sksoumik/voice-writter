@@ -12,8 +12,11 @@
 #   - Otherwise the app is ad hoc signed. It still runs, but downloaders must
 #     remove the quarantine flag once (the release notes explain how).
 #
-# Optional notarization environment variables (only used with a Developer ID):
-#   AC_API_KEY_ID, AC_API_ISSUER_ID, AC_API_KEY_PATH  (App Store Connect API key)
+# Notarization (only used when a Developer ID certificate is present). Provide
+# credentials one of two ways:
+#   - NOTARY_PROFILE: name of a profile saved with `xcrun notarytool store-credentials`
+#     (simplest). Example: NOTARY_PROFILE=voicewritter-notary ./scripts/release.sh v0.1.0
+#   - or AC_API_KEY_ID, AC_API_ISSUER_ID, AC_API_KEY_PATH  (App Store Connect API key)
 #
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -61,13 +64,21 @@ hdiutil create -volname "Voice Writter" -srcfolder "$STAGING" -ov -format UDZO "
 rm -rf "$STAGING"
 
 # Notarize only when we used a Developer ID and have notary credentials.
-if [ -n "${DEVID:-}" ] && [ -n "${AC_API_KEY_ID:-}" ] && [ -n "${AC_API_ISSUER_ID:-}" ] && [ -n "${AC_API_KEY_PATH:-}" ]; then
-  echo "==> Notarizing"
-  xcrun notarytool submit "$DMG" --key "$AC_API_KEY_PATH" --key-id "$AC_API_KEY_ID" --issuer "$AC_API_ISSUER_ID" --wait
-  xcrun stapler staple "$DMG"
-  NOTARIZED=1
-else
-  NOTARIZED=0
+NOTARIZED=0
+if [ -n "${DEVID:-}" ]; then
+  if [ -n "${NOTARY_PROFILE:-}" ]; then
+    echo "==> Notarizing (keychain profile: $NOTARY_PROFILE)"
+    xcrun notarytool submit "$DMG" --keychain-profile "$NOTARY_PROFILE" --wait
+    xcrun stapler staple "$DMG"
+    NOTARIZED=1
+  elif [ -n "${AC_API_KEY_ID:-}" ] && [ -n "${AC_API_ISSUER_ID:-}" ] && [ -n "${AC_API_KEY_PATH:-}" ]; then
+    echo "==> Notarizing (App Store Connect API key)"
+    xcrun notarytool submit "$DMG" --key "$AC_API_KEY_PATH" --key-id "$AC_API_KEY_ID" --issuer "$AC_API_ISSUER_ID" --wait
+    xcrun stapler staple "$DMG"
+    NOTARIZED=1
+  else
+    echo "==> Developer ID found, but no notary credentials set (NOTARY_PROFILE or AC_API_*). Skipping notarization."
+  fi
 fi
 
 echo "==> Publishing the GitHub release"

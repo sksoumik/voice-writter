@@ -139,12 +139,30 @@ Voice Writter does not make network calls except to download the open models fro
 
 ## Releasing (for maintainers)
 
-Two ways to publish a downloadable build to the Releases page:
+`./scripts/release.sh v0.1.0` builds, packages a `.dmg`, and publishes it to the Releases page. You can also push a tag (`git tag v0.1.0 && git push --tags`) to run the **Release** GitHub Actions workflow.
 
-- **Locally:** `./scripts/release.sh v0.1.0` builds, packages a `.dmg`, and creates the GitHub release. If you have a Developer ID certificate (and set the App Store Connect API key env vars), it also notarizes and staples for a warning free install.
-- **In CI:** push a tag (`git tag v0.1.0 && git push --tags`), or run the **Release** workflow manually. The GitHub Actions workflow in `.github/workflows/release.yml` builds and attaches the `.dmg` automatically.
+By default the build is **ad hoc signed**, so downloaders remove the quarantine flag once (see Download above).
 
-Without a paid Apple Developer account the build is ad hoc signed, so downloaders remove the quarantine flag once (see Download above). To produce notarized builds later, add a Developer ID certificate and notary credentials; the release script and workflow already have the hooks for it.
+### Notarized releases (recommended, needs a paid Apple Developer account)
+
+A notarized build installs with no warning. One time setup:
+
+1. Create a **Developer ID Application** certificate: Xcode → Settings → Accounts → your Apple ID → Manage Certificates → `+` → **Developer ID Application**. It installs into your keychain.
+2. Create an app specific password at [appleid.apple.com](https://appleid.apple.com) (Sign-In and Security → App-Specific Passwords).
+3. Save notary credentials once:
+
+   ```bash
+   xcrun notarytool store-credentials "voicewritter-notary" \
+     --apple-id "YOUR_APPLE_ID_EMAIL" --team-id YOUR_TEAM_ID --password "APP_SPECIFIC_PASSWORD"
+   ```
+
+Then cut a notarized release:
+
+```bash
+NOTARY_PROFILE=voicewritter-notary ./scripts/release.sh v0.1.0
+```
+
+The script detects the Developer ID certificate, signs with hardened runtime, notarizes, staples, and publishes. Downloaders just open it.
 
 ## License
 
