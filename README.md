@@ -79,10 +79,24 @@ You can change the dictation shortcut anytime in **Settings → General → Dict
 
 You can change the correction style and the models in Settings, reachable from the menu bar icon.
 
+## Correction styles
+
+In Settings → General you choose how much the grammar model is allowed to change your words. Any custom instructions you add are applied on top of the chosen style.
+
+| Style | What it instructs the model | Good for |
+| --- | --- | --- |
+| Fix errors only | Fix grammar and spelling, keep your exact words. | Verbatim with corrections |
+| Fix and lightly rephrase | Fix errors and lightly smooth phrasing, preserve your voice. | Small touch ups |
+| Clean up for readability | Fix errors and rewrite awkward or rambling parts so it reads clearly. | Real rewriting and paraphrasing |
+
+For full, natural, native sounding paraphrasing, use **Clean up for readability**, add a custom instruction such as "Paraphrase so it sounds like a native English speaker," and choose a stronger model (for example Qwen3 30B A3B Instruct 2507). Avoid "Fix and lightly rephrase" for this goal, because that style tells the model to preserve your voice and change the text only lightly, which works against full paraphrasing.
+
+Custom instructions are added one rule per line in Settings → General → Custom instructions. They apply on every dictation, on top of the style above.
+
 ## Models
 
 - **Transcription**: by default the app picks the best Whisper model for your Mac from `argmaxinc/whisperkit-coreml`. You can name a specific variant in Settings.
-- **Grammar**: the default is `mlx-community/Qwen2.5-3B-Instruct-4bit`, a small instruct model chosen because it returns corrected text directly and stays fast. You can switch to a lighter or different model in Settings.
+- **Grammar**: the default is `mlx-community/Qwen3-4B-Instruct-2507-4bit`, a small, non reasoning instruct model that follows instructions well and returns corrected text directly (no hidden thinking tokens), so it stays fast. In Settings → Models you can type **any** MLX format model id, or pick a recommended one. For the best quality on a 32 GB Mac, `mlx-community/Qwen3-30B-A3B-Instruct-2507-4bit` is excellent: it is a mixture of experts model, so only about 3 billion parameters are active per token and it stays fast despite its size (about a 17 GB download).
 
 Both models load when the app starts and stay in memory so dictation feels instant.
 

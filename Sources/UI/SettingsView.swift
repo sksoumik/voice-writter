@@ -84,14 +84,27 @@ private struct ModelSettingsView: View {
             }
 
             Section("Grammar (local language model)") {
-                Picker("Grammar model", selection: $settings.grammarModelId) {
-                    ForEach(AppSettings.grammarModelChoices) { choice in
-                        Text(choice.label).tag(choice.id)
+                TextField("Model id", text: $settings.grammarModelId)
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit { controller.reloadGrammarModel() }
+
+                HStack {
+                    Menu("Recommended models") {
+                        ForEach(AppSettings.grammarModelChoices) { choice in
+                            Button(choice.label) {
+                                settings.grammarModelId = choice.id
+                                controller.reloadGrammarModel()
+                            }
+                        }
                     }
+                    Spacer()
+                    Button("Load model") { controller.reloadGrammarModel() }
                 }
-                .onChange(of: settings.grammarModelId) { _, _ in
-                    controller.reloadGrammarModel()
-                }
+
+                Text("Enter any MLX format model id from Hugging Face (for example from mlx-community), or pick a recommended one. Bigger models follow custom instructions better but are slower and download more. A new model downloads on first use.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
                 if controller.grammarProgress > 0, controller.grammarProgress < 1 {
                     ProgressView(value: controller.grammarProgress) {
                         Text("Downloading grammar model")

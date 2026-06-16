@@ -102,18 +102,22 @@ final class AppSettings: ObservableObject {
 
     // Default grammar model: a small, non reasoning instruct model that returns
     // corrected text directly with no hidden thinking tokens, so it stays fast.
-    static let defaultGrammarModelId = "mlx-community/Qwen2.5-3B-Instruct-4bit"
+    // Qwen3 Instruct 2507 follows instructions noticeably better than Qwen2.5.
+    static let defaultGrammarModelId = "mlx-community/Qwen3-4B-Instruct-2507-4bit"
 
-    /// A short list of grammar models that work well for this task.
+    /// Recommended grammar models. All are MLX format and use architectures the
+    /// MLX Swift runtime supports. You can also type any other MLX model id.
     static let grammarModelChoices: [ModelChoice] = [
-        ModelChoice(id: "mlx-community/Qwen2.5-3B-Instruct-4bit",
-                    label: "Qwen2.5 3B (recommended, ~2 GB)"),
+        ModelChoice(id: "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+                    label: "Qwen3 4B Instruct 2507 — recommended, fast (~2.5 GB)"),
+        ModelChoice(id: "mlx-community/Qwen3-30B-A3B-Instruct-2507-4bit",
+                    label: "Qwen3 30B A3B Instruct 2507 — best quality, still fast (~17 GB, 32 GB Macs)"),
+        ModelChoice(id: "mlx-community/Qwen2.5-14B-Instruct-4bit",
+                    label: "Qwen2.5 14B Instruct — strong (~8 GB)"),
         ModelChoice(id: "mlx-community/Qwen2.5-7B-Instruct-4bit",
-                    label: "Qwen2.5 7B (best quality, slower, ~4.5 GB)"),
-        ModelChoice(id: "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
-                    label: "Qwen2.5 1.5B (lighter, faster, ~1 GB)"),
-        ModelChoice(id: "mlx-community/Llama-3.2-3B-Instruct-4bit",
-                    label: "Llama 3.2 3B (~2 GB)"),
+                    label: "Qwen2.5 7B Instruct (~4.5 GB)"),
+        ModelChoice(id: "mlx-community/Qwen2.5-3B-Instruct-4bit",
+                    label: "Qwen2.5 3B Instruct — lightest (~2 GB)"),
     ]
 
     struct ModelChoice: Identifiable, Hashable {
