@@ -17,17 +17,11 @@ You press a global hotkey, speak, and press it again. Voice Writter turns your s
 
 Prebuilt releases are on the [Releases page](https://github.com/sksoumik/voice-writter/releases).
 
-1. Download the latest `VoiceWritter-vX.Y.Z.dmg`, open it, and drag Voice Writter to your Applications folder.
-2. This build is not notarized (the project has no paid Apple Developer account), so macOS will not open it directly. Remove the quarantine flag once, in Terminal:
-
-   ```bash
-   xattr -dr com.apple.quarantine /Applications/VoiceWritter.app
-   ```
-
-   Then open Voice Writter from your Applications folder.
+1. Download the latest `VoiceWritter-vX.Y.Z.dmg` from the Releases page, open it, and drag Voice Writter to your Applications folder.
+2. Open Voice Writter. The official releases are signed and notarized by Apple, so it opens normally with no security warning.
 3. Grant Microphone, Accessibility, and Input Monitoring when asked.
 
-Prefer to build it yourself? See [Build and run](#build-and-run) below.
+Prefer to build it yourself? See [Build and run](#build-and-run) below. (A copy you build yourself is not notarized, so on first launch you may need to run `xattr -dr com.apple.quarantine /Applications/VoiceWritter.app` once.)
 
 ## Requirements
 
