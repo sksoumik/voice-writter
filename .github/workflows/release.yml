@@ -1,12 +1,11 @@
 name: Release
 
-# Publishes a downloadable .dmg to the GitHub Releases page.
-# Trigger by pushing a version tag (for example: git tag v0.1.0 && git push --tags)
-# or by running this workflow manually with a version.
+# Builds an AD HOC (not notarized) .dmg in CI and attaches it to a release.
+# This is a manual fallback. Official, notarized releases are cut on a Mac with
+# `scripts/release.sh` (which signs with Developer ID and notarizes). This
+# workflow is manual only so it never overwrites a notarized release that the
+# local script just published with the same tag.
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
     inputs:
       version:
@@ -36,12 +35,7 @@ jobs:
 
       - name: Resolve the version
         id: ver
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "version=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
-          fi
+        run: echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
 
       - name: Generate the Xcode project
         run: xcodegen generate

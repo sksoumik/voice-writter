@@ -133,13 +133,17 @@ Voice Writter does not make network calls except to download the open models fro
 
 ## Releasing (for maintainers)
 
-`./scripts/release.sh v0.1.0` builds, packages a `.dmg`, and publishes it to the Releases page. You can also push a tag (`git tag v0.1.0 && git push --tags`) to run the **Release** GitHub Actions workflow.
+Official releases are cut on a Mac with `scripts/release.sh`. With a Developer ID certificate and notary credentials it signs, notarizes, staples, packages a `.dmg`, and publishes it, so the download installs with no warning:
 
-By default the build is **ad hoc signed**, so downloaders remove the quarantine flag once (see Download above).
+```bash
+NOTARY_PROFILE=voicewritter-notary ./scripts/release.sh v0.1.0
+```
 
-### Notarized releases (recommended, needs a paid Apple Developer account)
+Without notary credentials the same script produces an ad hoc build (downloaders run the quarantine step from Download above). The GitHub Actions **Release** workflow is a manual, ad hoc only fallback (run it from the Actions tab); it never runs automatically, so it cannot overwrite a notarized release.
 
-A notarized build installs with no warning. One time setup:
+### Notarized releases: one time setup (needs a paid Apple Developer account)
+
+One time setup:
 
 1. Create a **Developer ID Application** certificate: Xcode → Settings → Accounts → your Apple ID → Manage Certificates → `+` → **Developer ID Application**. It installs into your keychain.
 2. Create an app specific password at [appleid.apple.com](https://appleid.apple.com) (Sign-In and Security → App-Specific Passwords).
