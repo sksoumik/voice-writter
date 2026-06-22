@@ -155,7 +155,7 @@ private struct PermissionsSettingsView: View {
             Section("Input Monitoring") {
                 permissionRow(
                     granted: permissions.inputMonitoringGranted,
-                    text: "Needed to detect the fn key being held down.",
+                    text: "Needed to detect the global dictation shortcut.",
                     action: { permissions.openInputMonitoringSettings() }
                 )
             }

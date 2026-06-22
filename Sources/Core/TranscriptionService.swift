@@ -3,7 +3,7 @@ import WhisperKit
 
 /// Loads WhisperKit and handles push to talk recording.
 ///
-/// While the fn key is held we record the microphone. When it is released we
+/// While dictation is active we record the microphone. When it stops we
 /// transcribe the whole clip in one pass, which is more accurate for short
 /// bursts than streaming and reliably captures the end of the sentence.
 @MainActor

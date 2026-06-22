@@ -6,7 +6,7 @@ import CoreGraphics
 
 /// Checks and requests the permissions the app needs:
 /// the microphone (to hear you), Accessibility (to type into other apps), and
-/// Input Monitoring (to detect the fn key being held down anywhere).
+/// Input Monitoring (to detect the global dictation shortcut).
 @MainActor
 final class PermissionsManager: ObservableObject {
     static let shared = PermissionsManager()
