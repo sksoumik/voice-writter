@@ -111,6 +111,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         setup.target = self
         menu.addItem(setup)
 
+        let donate = NSMenuItem(title: "Buy me a coffee ☕", action: #selector(buyMeACoffee), keyEquivalent: "")
+        donate.target = self
+        menu.addItem(donate)
+
         menu.addItem(.separator())
 
         let quit = NSMenuItem(title: "Quit Voice Writter", action: #selector(quit), keyEquivalent: "q")
@@ -133,6 +137,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc private func toggleGrammar() {
         AppSettings.shared.grammarEnabled.toggle()
     }
+    @objc private func buyMeACoffee() {
+        if let url = URL(string: "https://www.patreon.com/sksoumik/posts/buy-me-coffee-161839549") {
+            NSWorkspace.shared.open(url)
+        }
+    }
+
     @objc private func quit() { NSApp.terminate(nil) }
 
     @objc private func openSettings() {

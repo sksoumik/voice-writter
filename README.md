@@ -4,6 +4,8 @@ Real time voice to text dictation for macOS, with automatic grammar correction, 
 
 You press a global hotkey, speak, and press it again. Voice Writter turns your speech into text, cleans up the grammar with a local language model, and pastes the result wherever your cursor is.
 
+[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-%E2%98%95-FF424D?logo=patreon&logoColor=white)](https://www.patreon.com/sksoumik/posts/buy-me-coffee-161839549)
+
 ## Features
 
 - System wide dictation. It types into any app: notes, browsers, chat apps, code editors, email.
@@ -161,6 +163,14 @@ NOTARY_PROFILE=voicewritter-notary ./scripts/release.sh v0.1.0
 ```
 
 The script detects the Developer ID certificate, signs with hardened runtime, notarizes, staples, and publishes. Downloaders just open it.
+
+## Support
+
+Voice Writter is free and open source. If it saves you time, you can buy me a coffee ☕:
+
+[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-%E2%98%95-FF424D?logo=patreon&logoColor=white)](https://www.patreon.com/sksoumik/posts/buy-me-coffee-161839549)
+
+A one time $5 tip helps me keep fixing bugs and adding features. Thank you.
 
 ## License
 
