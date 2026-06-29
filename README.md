@@ -11,7 +11,7 @@ You press a global hotkey, speak, and press it again. Voice Writter turns your s
 - System wide dictation. It types into any app: notes, browsers, chat apps, code editors, email.
 - On device speech recognition using [WhisperKit](https://github.com/argmaxinc/argmax-oss-swift), which runs Whisper models on the Apple Neural Engine.
 - On device grammar correction using a small local language model through [MLX](https://github.com/ml-explore/mlx-swift-lm). It fixes grammar, spelling, and punctuation, and lightly smooths awkward phrasing while keeping your meaning and voice.
-- Press Option + Q to start, press it again to stop and insert. The shortcut is configurable in Settings.
+- Tap the Right Command key to start, tap it again to stop and insert. An optional key combo (default Option + Q) is configurable in Settings.
 - A floating overlay that shows the status and a microphone level while you speak.
 - Private by design. Audio and text never leave your Mac.
 
@@ -77,17 +77,19 @@ A setup window opens on first launch and walks you through:
 
 1. **Microphone**: allow it so the app can hear you.
 2. **Accessibility**: turn on Voice Writter in System Settings, Privacy and Security, Accessibility. This lets the app type into other apps.
-3. **Input Monitoring**: turn on Voice Writter in System Settings, Privacy and Security, Input Monitoring. This lets the app detect the Option + Q shortcut.
+3. **Input Monitoring**: turn on Voice Writter in System Settings, Privacy and Security, Input Monitoring. This lets the app detect the Right Command key tap (and the optional Option + Q shortcut).
 4. **Model download**: wait for the transcription and grammar models to download (once).
 
 ## How to use it
 
 1. Put your cursor anywhere you can type.
-2. **Press Option + Q** and start speaking. The floating overlay shows that it is listening.
-3. **Press Option + Q again** to stop. Voice Writter transcribes, cleans up the grammar, and pastes the text where your cursor is.
+2. **Tap the Right Command (⌘) key** and start speaking. The floating overlay shows that it is listening.
+3. **Tap Right Command again** to stop. Voice Writter transcribes, cleans up the grammar, and pastes the text where your cursor is.
 4. To throw away a dictation, press **Escape**.
 
-You can change the dictation shortcut anytime in **Settings → General → Dictation shortcut**. While Voice Writter is running, the chosen shortcut is reserved for it and will not type its normal character.
+Only a clean tap of Right Command toggles dictation, so ordinary shortcuts like Right Command + C keep working and the key still behaves as a normal modifier. You can also set an optional key combo in **Settings → General** (default Option + Q); while Voice Writter is running, that combo is reserved for it and will not type its normal character.
+
+Tip: if macOS built-in Dictation is also set to the Right Command key (System Settings → Keyboard → Dictation), both can trigger at once. Change one of them to avoid a conflict.
 
 You can change the correction style and the models in Settings, reachable from the menu bar icon.
 
@@ -115,9 +117,9 @@ Both models load when the app starts and stay in memory so dictation feels insta
 ## How it works
 
 ```
-Option+Q ─▶ record microphone ─▶ (overlay shows listening)
+Right ⌘ tap ─▶ record microphone ─▶ (overlay shows listening)
                                    │
-                            Option+Q again
+                            Right ⌘ tap again
                                    ▼
    WhisperKit transcribes ─▶ MLX grammar model ─▶ clean text ─▶ paste into focused app
 ```

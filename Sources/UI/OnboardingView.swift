@@ -48,7 +48,7 @@ struct OnboardingView: View {
                 number: 3,
                 title: "Allow Input Monitoring",
                 done: permissions.inputMonitoringGranted,
-                detail: "This lets Voice Writter detect the Option + Q shortcut. Turn on Voice Writter in the list, then come back."
+                detail: "This lets Voice Writter detect the Right Command key (and the optional Option + Q shortcut). Turn on Voice Writter in the list, then come back."
             ) {
                 HStack {
                     Button("Request access") { permissions.requestInputMonitoring() }
@@ -72,7 +72,7 @@ struct OnboardingView: View {
                 number: 5,
                 title: "How to use it",
                 done: true,
-                detail: "Press Option + Q to start listening, then press Option + Q again to stop. Voice Writter types the cleaned text where your cursor is. Press Escape to cancel. You can change the shortcut in Settings."
+                detail: "Tap the Right Command (⌘) key to start listening, then tap it again to stop. Voice Writter types the cleaned text where your cursor is. Press Escape to cancel. You can also set an optional key combo in Settings."
             ) { EmptyView() }
 
             Divider()

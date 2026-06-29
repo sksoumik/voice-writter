@@ -23,8 +23,11 @@ private struct GeneralSettingsView: View {
     var body: some View {
         Form {
             Section("How to dictate") {
-                KeyboardShortcuts.Recorder("Dictation shortcut:", name: .toggleDictation)
-                Text("Press your shortcut to start listening, press it again to stop and insert the cleaned text. Press Escape to cancel. The default is Option + Q.")
+                Text("Tap the Right Command (⌘) key to start listening, then tap it again to stop and insert the cleaned text. Press Escape to cancel.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                KeyboardShortcuts.Recorder("Extra shortcut (optional):", name: .toggleDictation)
+                Text("An optional key combo that also toggles dictation. The default is Option + Q. The Right Command key keeps working either way.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
